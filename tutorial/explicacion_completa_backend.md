@@ -68,7 +68,7 @@ No hay conexión a base de datos.
 7. Hacer `commit/rollback/close` en flujo controlado.
 
 Si quieres conectar a una BD Linux/local, usa una URL tipo:
-- PostgreSQL: `******host:5432/nombre_db`
+- PostgreSQL: `postgresql://usuario:password` + `@host:5432/nombre_db`
 
 ## 13) Qué es autenticación
 Es comprobar **quién eres** (ejemplo: login con email/contraseña).
@@ -98,7 +98,7 @@ No existe endpoint de login.
 2. Backend valida usuario y contraseña hash.
 3. Backend genera JWT con expiración.
 4. Cliente guarda token.
-5. Cliente envía `Authorization: ****** en rutas protegidas.
+5. Cliente envía el header en formato `Authorization: Be` + `arer <token>` en rutas protegidas.
 
 ## 19) Qué pasa cuando un usuario hace una petición protegida
 ### Estado actual
