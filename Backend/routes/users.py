@@ -1,15 +1,13 @@
-from fastapi import FastAPI
+from fastapi import APIRouter
 from pydantic import BaseModel
 
-
+router = APIRouter()
 # Inicia el server: python -m uvicorn users:app --reload
 # Detener el server: CTRL+C
 
 # Documentación con Swagger: http://127.0.0.1:8000/docs
 # Documentación con Redocly: http://127.0.0.1:8000/redoc
 
-# Instancia principal de la aplicación FastAPI.
-app = FastAPI()
 
 
 # Modelo de datos para representar un usuario.
@@ -36,7 +34,7 @@ users_list = [
 ]
 
 # Endpoint para obtener todos los usuarios (ejemplo de datos estáticos)
-@app.get("/users_example")
+@router.get("/users_example")
 async def usersexample():
     # Devuelve una lista fija de diccionarios (demo simple).
     return [{"nombre": "Alexander", "apellido": "Sinisterra", "web": "https://sinisterradev.com"},
@@ -45,18 +43,18 @@ async def usersexample():
 
 
 # Endpoint para obtener la lista completa de usuarios del arreglo en memoria.
-@app.get("/users")
+@router.get("/users")
 async def users():
     return users_list   
 
 
 # Path parameter: busca un usuario por su id desde la ruta (/user/1, /user/2, etc.).
-@app.get("/user/{id}")
+@router.get("/user/{id}")
 async def user(id: int):
     return search_user(id)
 
 # Query parameter: busca un usuario por id usando query string (/user/?id=1).
-@app.get("/user/")
+@router.get("/user/")
 async def user(id: int):
     return search_user(id)  
    
@@ -72,5 +70,11 @@ def search_user(id: int):
         # Si no hay coincidencias, responde con un mensaje de error.
         return {"error": "User not found"}
     
+
+@router.post("/user/")
+async def create_user(user: User):
+    # Agrega el nuevo usuario a la lista en memoria.
+    users_list.append(user)
+    return user
 
              
